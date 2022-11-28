@@ -21,6 +21,36 @@ class MovieCard extends Component {
     this.fetchMovieData();
   }
 
+  //componentDidMount is perfect for fetching data initially, to fill up our
+  // component with dynamic content for its initial load
+
+  //when we need an operation like fetch to be re-executed though,
+  //we might need to intereact with the updating phase of a component..
+
+  //a component updates whenever a change is detected in its STATE or in its PROPS
+  //to intercept these updating phases and inject your own logic into them
+  //you need to work with componentDidUpdate, whic is a lifecylce method
+  //that is being automatically executed just AFTER the detection of an update
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("MOVIECARD HAS BEEN UPDATED");
+    console.log("prevProps:", prevProps);
+    console.log("currentProps:", this.props);
+    // this.fetchMovieData(); //You can't do that, it gives infinite loop,
+    //because our function sets state, and thats fired componentDidUpdated again
+
+    //what can we do to solve the problem, we can use this
+    // we^d like this this componentDidUpdate method to be launched in this situation
+    //whenever the title changes from the props, but not when the state is set!
+
+    //every time you use componentDidUpdate, you have to put a constraint!
+    //you want to pull handbrake
+    if (prevProps.selectedMovieTitle !== this.props.selectedMovieTitle) {
+      this.fetchMovieData();
+      //this if statement launches the fetch function JUST when the selectedMovieTitle
+      //changes from the props, NOT when the state  is being set one more time
+    }
+  }
   fetchMovieData = async () => {
     try {
       let response = await fetch(

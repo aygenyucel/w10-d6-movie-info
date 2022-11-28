@@ -1,14 +1,21 @@
 import { Component } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import MovieCard from "./components/MovieCard";
+import MovieForm from "./components/MovieForm";
 
 //we use state because we'll have input field. So we change the function component to class component
 
 class App extends Component {
   state = {
     selectedMovieTitle: "Doctor Strange",
+  };
+
+  changeSelectedMovieTitle = (newMovieTitle) => {
+    this.setState({
+      selectedMovieTitle: newMovieTitle,
+    });
   };
   render() {
     return (
@@ -17,25 +24,10 @@ class App extends Component {
           <Row className="justify-content-center mt-4">
             <Col xs={12} md={6}>
               <h1>Movie Info App!</h1>
-              <Form>
-                <Form.Group controlId="">
-                  <Form.Label>Choose your movie here!</Form.Label>
-                  <Form.Control
-                    as="select"
-                    value={this.state.selectedMovieTitle}
-                    onChange={(e) =>
-                      this.setState({ selectedMovieTitle: e.target.value })
-                    }
-                    //twp way data binding!
-                  >
-                    <option>Doctor Strange</option>
-                    <option>Ironman</option>
-                    <option>Black Widow</option>
-                    <option>The Avengers</option>
-                    <option>The Hulk</option>
-                  </Form.Control>
-                </Form.Group>
-              </Form>
+              <MovieForm
+                selectedMovieTitle={this.state.selectedMovieTitle}
+                changeSelectedMovieTitle={this.changeSelectedMovieTitle}
+              />
             </Col>
           </Row>
           <Row className="justify-content-center mt-4">
