@@ -1,6 +1,6 @@
 //because movieCard is a component that will be in charge of fetching
 // import { Component } from "react";
-import { Card, Spinner } from "react-bootstrap";
+import { Alert, Card, Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
 //data from the omdbAPI, this already tells me that MovieCard needs to be
 //created as a Class Component
@@ -19,6 +19,7 @@ const MovieCard = (props) => {
 
   const [selectedMovieObject, setSelectedMovieObject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   // componentDidMount() {
   //   //stuff lauched inside componentDidMont will execute one time upon launch!
   //   this.fetchMovieData();
@@ -85,11 +86,13 @@ const MovieCard = (props) => {
         console.log("Something went wrong :(");
         // this.setState({ isLoading: false });
         setIsLoading(false);
+        setIsError(true);
       }
     } catch (error) {
       console.log(error);
       // this.setState({ isLoading: false });
       setIsLoading(false);
+      setIsError(true);
     }
   };
 
@@ -98,6 +101,8 @@ const MovieCard = (props) => {
       {/* if we don't use ternary operator here, the page will be broken, because selectedMovieObject is null for start */}
       {isLoading ? (
         <Spinner animation="border" variant="warning" />
+      ) : isError ? (
+        <Alert variant="danger">Whoopsie, error happened!</Alert>
       ) : (
         <Card>
           <Card.Img variant="top" src={selectedMovieObject.Poster} />
